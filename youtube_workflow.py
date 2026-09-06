@@ -1867,6 +1867,29 @@ def cmd_setup_oauth(args):
     subprocess.run(["python3", str(WORKFLOW_DIR / "oauth_server.py")])
 
 
+def cmd_clean_downloads(args=None) -> Dict:
+    """Delete all downloaded video files from downloads/ directory to free up disk space."""
+    count = 0
+    total_bytes = 0
+    if DOWNLOADS_DIR.exists():
+        for f in list(DOWNLOADS_DIR.glob("*")):
+            try:
+                if f.is_file():
+                    total_bytes += f.stat().st_size
+                    f.unlink(missing_ok=True)
+                    count += 1
+                elif f.is_dir():
+                    shutil.rmtree(f, ignore_errors=True)
+            except Exception:
+                pass
+    DOWNLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    mb = total_bytes / (1024 * 1024)
+    gb = mb / 1024
+    size_str = f"{gb:.2f} GB" if gb >= 1.0 else f"{mb:.1f} MB"
+    print(f"✔ Cleaned {count} file(s) from {DOWNLOADS_DIR} ({size_str} freed).")
+    return {"cleaned_files": count, "freed_bytes": total_bytes}
+
+
 # =============================================================================
 # MAIN ENTRYPOINT
 # =============================================================================
@@ -1939,6 +1962,9 @@ Examples:
     sc = subparsers.add_parser("setup-cookies", help="Configure YouTube or Instagram cookie files")
     sc.add_argument("--instagram-file", help="Path to exported Instagram cookies.txt file")
 
+    # clean
+    subparsers.add_parser("clean", help="Delete all downloaded videos from downloads/ directory to free up disk space")
+
     args = parser.parse_args()
 
     if args.command == "process-channel":
@@ -1957,6 +1983,8 @@ Examples:
         cmd_setup_instagram(args)
     elif args.command == "setup-cookies":
         cmd_setup_cookies(args)
+    elif args.command == "clean":
+        cmd_clean_downloads(args)
     else:
         parser.print_help()
 

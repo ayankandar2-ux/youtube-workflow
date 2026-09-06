@@ -1593,7 +1593,8 @@ def settings_menu():
         "4. Instagram Cookies Configuration",
         "5. YouTube Cookies Configuration",
         "6. Queue Status & Database Summary",
-        "7. Back to Main Menu"
+        "7. Clear Downloaded Videos Cache (Free up storage)",
+        "8. Back to Main Menu"
     ]
 
     while True:
@@ -1668,7 +1669,27 @@ def settings_menu():
                     input(f"\n{BOLD}Press Enter to return to settings...{RESET}")
         elif idx == 5:
             show_queue_status()
-        elif idx in [6, -1]:
+        elif idx == 6:
+            clear_screen()
+            print_banner("Clear Downloaded Videos Cache", platform="settings")
+            files = list(yw.DOWNLOADS_DIR.glob("*")) if yw.DOWNLOADS_DIR.exists() else []
+            total_bytes = sum(f.stat().st_size for f in files if f.is_file())
+            mb = total_bytes / (1024 * 1024)
+            gb = mb / 1024
+            size_str = f"{gb:.2f} GB" if gb >= 1.0 else f"{mb:.1f} MB"
+            print(f"Downloads folder: {yw.DOWNLOADS_DIR}")
+            print(f"Current contents: {len(files)} file(s) occupying {BOLD}{size_str}{RESET}\n")
+            if files:
+                confirm = ask_text("Are you sure you want to delete all downloaded videos? (y/N):", allow_empty=True).strip().lower()
+                if confirm in ["y", "yes"]:
+                    res = yw.cmd_clean_downloads()
+                    print(f"\n{GREEN}{BOLD}✔ Storage cleared successfully!{RESET}")
+                else:
+                    print(f"\n{YELLOW}Cancelled. No files deleted.{RESET}")
+            else:
+                print(f"{GREEN}Downloads folder is already completely empty.{RESET}")
+            input(f"\n{BOLD}Press Enter to return to settings...{RESET}")
+        elif idx in [7, -1]:
             break
 
 
