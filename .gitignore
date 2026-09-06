@@ -1,0 +1,73 @@
+# ==========================================
+# SECRETS & CREDENTIALS (NEVER COMMIT)
+# ==========================================
+.env
+.env.*
+!.env.example
+*.env
+*.token
+*.secret
+client_secret*.json
+*.apps.googleusercontent.com.json
+OAuth*.txt
+oauth*.txt
+*cookie*
+*cookies*
+*.cookies
+facebook_config.json
+instagram_config.json
+.code_verifier
+.oauth_status
+
+# ==========================================
+# DATABASES & LOCAL RUNTIME STATE
+# ==========================================
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+workflow.db
+videos.db
+metadata/
+queue/
+logs/
+*.log
+
+# ==========================================
+# MEDIA & DOWNLOAD ARTIFACTS
+# ==========================================
+downloads/
+thumbnails/
+*.mp4
+*.m4a
+*.webm
+*.mkv
+*.avi
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.temp.mp4
+*.part
+*.ytdl
+test_reel.mp4
+test_sample.mp4
+
+# ==========================================
+# PYTHON & SYSTEM
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+venv/
+.venv/
+env/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

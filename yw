@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+if [ $# -eq 0 ]; then
+    python3 /root/youtube-workflow/app.py
+else
+    python3 /root/youtube-workflow/youtube_workflow.py "$@"
+fi
