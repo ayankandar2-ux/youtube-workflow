@@ -54,6 +54,10 @@ thumbnails/
 test_reel.mp4
 test_sample.mp4
 
+# Whitelist documentation assets
+!assets/
+!assets/**
+
 # ==========================================
 # PYTHON & SYSTEM
 # ==========================================
